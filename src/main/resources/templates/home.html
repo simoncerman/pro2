@@ -5,13 +5,9 @@
     <title>Home</title>
 </head>
 <body>
-<h1 th:text="${title + ' Page'}"></h1>
+<h1>Home Page</h1>
 
-<a th:if="${list == null}" th:href="@{/test}">Go to the Shopping list</a>
-
-<ul th:if="${list != null}">
-    <li th:each="item: ${list}" th:text="${item}"></li>
-</ul>
+<a th:href="@{/users/}">List of Users</a>
 
 </body>
 </html>
