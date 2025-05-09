@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail of the User</title>
+</head>
+<body>
+<h1 th:text="${'User ' + user.name}"></h1>
+<h5 th:text="${'ID: ' + user.id}"></h5>
+
+<a th:href="@{'/users/' + ${user.id} + '/edit'}">Edit User</a>
+<a th:href="@{'/users/' + ${user.id} + '/delete'}">Delete User</a>
+
+</body>
+</html>

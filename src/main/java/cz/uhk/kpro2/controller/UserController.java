@@ -1,21 +1,26 @@
 package cz.uhk.kpro2.controller;
 
 import cz.uhk.kpro2.model.User;
+import cz.uhk.kpro2.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
-    private List<User> users = new ArrayList<User>();
+    private UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/")
     public String getAll(Model model) {
-        model.addAttribute("users", users);
+        model.addAttribute("users", userService.getAllUsers());
         return "users_list";
     }
 
@@ -25,29 +30,46 @@ public class UserController {
         return "users_form";
     }
 
+    @GetMapping("/{id}")
+    public String getUser(Model model, @PathVariable long id) {
+        User user = userService.getUser(id);
+        if (user != null) {
+            model.addAttribute("user", user);
+            return "users_detail";
+        }
+        return "redirect:/users/";
+    }
+
     @GetMapping("/{id}/edit")
     public String editUser(Model model, @PathVariable long id) {
-        //only if user exists
-        model.addAttribute("user", users.get((int)id));
-        return "users_form";
+        User user = userService.getUser(id);
+        if (user != null) {
+            model.addAttribute("user", user);
+            return "users_form";
+        }
+        return "redirect:/users/";
     }
 
     @PostMapping("/save")
     public String saveUser(@ModelAttribute User user) {
-        users.add(user);
+        userService.saveUser(user);
         return "redirect:/users/";
     }
 
 
     @GetMapping("/{id}/delete")
     public String deleteUser(Model model, @PathVariable long id) {
-        model.addAttribute("user", users.get((int)id));
-        return "users_delete";
+        User user = userService.getUser(id);
+        if (user != null) {
+            model.addAttribute("user", user);
+            return "users_delete";
+        }
+        return "redirect:/users/";
     }
 
     @PostMapping("/{id}/delete")
     public String deleteUserConfirm(@PathVariable long id) {
-        //delete user if exists
+        userService.deleteUser(id);
         return "redirect:/users/";
     }
 
