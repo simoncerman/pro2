@@ -2,6 +2,7 @@ package cz.uhk.kpro2.controller;
 
 import cz.uhk.kpro2.model.Course;
 import cz.uhk.kpro2.service.CourseService;
+import cz.uhk.kpro2.service.LecturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,11 +12,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/courses")
 public class CourseController {
 
-    private CourseService courseService;
+    private final CourseService courseService;
+    private final LecturerService lecturerService;
 
     @Autowired
-    public CourseController(CourseService courseService) {
+    public CourseController(CourseService courseService, LecturerService lecturerService) {
         this.courseService = courseService;
+        this.lecturerService = lecturerService;
     }
 
     @GetMapping("/")
@@ -27,6 +30,7 @@ public class CourseController {
     @GetMapping("/new")
     public String newCourse(Model model) {
         model.addAttribute("course", new Course());
+        model.addAttribute("lecturers", lecturerService.getAllLecturers());
         return "courses_form";
     }
 
@@ -44,6 +48,7 @@ public class CourseController {
     public String editCourse(Model model, @PathVariable long id) {
         Course course = courseService.getCourse(id);
         if (course != null) {
+            model.addAttribute("lecturers", lecturerService.getAllLecturers());
             model.addAttribute("course", course);
             return "courses_form";
         }

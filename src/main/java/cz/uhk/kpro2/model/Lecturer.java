@@ -2,6 +2,8 @@ package cz.uhk.kpro2.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "lecturers")
 public class Lecturer {
@@ -9,6 +11,17 @@ public class Lecturer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
+
+    @OneToMany(mappedBy = "lecturer")
+    private List<Course> courses;
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
 
     public long getId() {
         return id;

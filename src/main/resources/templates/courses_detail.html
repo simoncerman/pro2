@@ -7,6 +7,7 @@
 <body>
 <h1 th:text="${'Course ' + course.name}"></h1>
 <h5 th:text="${'ID: ' + course.id}"></h5>
+<h3 th:text="${'Lecturer: ' + course.lecturer.name}"></h3>
 
 <a th:href="@{'/courses/' + ${course.id} + '/edit'}">Edit Course</a>
 <a th:href="@{'/courses/' + ${course.id} + '/delete'}">Delete Course</a>

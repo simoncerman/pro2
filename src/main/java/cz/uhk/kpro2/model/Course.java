@@ -10,6 +10,17 @@ public class Course {
     private long id;
     private String name;
 
+    @ManyToOne
+    private Lecturer lecturer;
+
+    public Lecturer getLecturer() {
+        return lecturer;
+    }
+
+    public void setLecturer(Lecturer lecturer) {
+        this.lecturer = lecturer;
+    }
+
     public long getId() {
         return id;
     }

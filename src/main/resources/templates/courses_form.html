@@ -10,6 +10,10 @@
 <form method="post" th:action="@{/courses/save}" th:object="${course}">
     <input type="hidden" th:field="*{id}">
     Name: <input type="text" th:field="*{name}">
+    <select th:field="*{lecturer}">
+        <option th:each="lec: ${lecturers}"
+                th:value="${lec.id}" th:text="${lec.name}"></option>
+    </select>
     <input type="submit" value="Save">
 </form>
 
