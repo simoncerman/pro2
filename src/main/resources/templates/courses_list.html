@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Courses</title>
+</head>
+<body>
+<a th:href="@{/courses/new}">Add new Course</a>
+
+<ul>
+    <li th:each="course: ${courses}">
+        <a th:href="@{'/courses/' + ${course.id}}" th:text="${course.name}"></a>
+    </li>
+</ul>
+
+</body>
+</html>

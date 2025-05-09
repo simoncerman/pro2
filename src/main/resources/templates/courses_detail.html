@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail of the Course</title>
+</head>
+<body>
+<h1 th:text="${'Course ' + course.name}"></h1>
+<h5 th:text="${'ID: ' + course.id}"></h5>
+
+<a th:href="@{'/courses/' + ${course.id} + '/edit'}">Edit Course</a>
+<a th:href="@{'/courses/' + ${course.id} + '/delete'}">Delete Course</a>
+
+</body>
+</html>

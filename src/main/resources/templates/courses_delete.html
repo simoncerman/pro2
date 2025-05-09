@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Course</title>
+</head>
+<body>
+<h1 th:text="${'Are you sure you want to delete course: ' + course.name + '?'}"></h1>
+
+<form method="post" th:action="@{'/courses/' + ${id} + '/delete'}">
+    <input type="submit" value="Yes, delete!">
+    <a th:href="@{'/courses/' + ${course.id}}">No</a>
+</form>
+
+</body>
+</html>
