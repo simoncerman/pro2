@@ -5,12 +5,12 @@
     <title>Delete User</title>
 </head>
 <body>
-<h1 th:text="${'Are you sure you want to delete user: ' + user.name + '?'}"></h1>
-
-<form method="post" th:action="@{'/users/' + ${id} + '/delete'}">
-    <input type="submit" value="Yes, delete!">
-    <a th:href="@{'/users/' + ${user.id}}">No</a>
-</form>
-
+<div th:fragment="content">
+    <h1 th:text="${'Are you sure you want to delete user: ' + user.username + '?'}"></h1>
+    <form method="post" th:action="@{'/users/' + ${id} + '/delete'}">
+        <button type="submit" class="btn btn-danger">Yes, delete!</button>
+        <a class="btn btn-secondary" th:href="@{'/users/' + ${user.id}}">No</a>
+    </form>
+</div>
 </body>
 </html>

@@ -1,16 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Detail of the Course</title>
-</head>
+<head th:replace="layout :: head"></head>
+
 <body>
-<h1 th:text="${'Course ' + course.name}"></h1>
-<h5 th:text="${'ID: ' + course.id}"></h5>
-<h3 th:text="${'Lecturer: ' + course.lecturer.name}"></h3>
+    <nav th:replace="layout :: nav"></nav>
+    <div th:fragment="content" class="p-4">
+        <h1 th:text="${'Vaření ' + course.name}"></h1>
+        <h5 th:text="${'ID: ' + course.id}"></h5>
+        <h3 th:if="${course.bosMember != null}" th:text="${'Zástupce bezpečnostní organizace spolku: ' + course.bosMember.name}"></h3>
+        <a th:href="@{'/courses/' + ${course.id} + '/edit'}" class="btn btn-primary">Edit Course</a>
+        <a th:href="@{'/courses/' + ${course.id} + '/delete'}" class="btn btn-danger">Delete Course</a>
+        <a th:href="@{'/fuel-cells/new?courseId=' + ${course.id}}" class="btn btn-success">Přidat palivový článek</a>
+        <div class="mt-4">
+            <h3>Účastni vaření:</h3>
+            <ul class="list-group">
+                <li class="list-group-item" th:each="member : ${course.members}" th:text="${member.username}"></li>
+            </ul>
+        </div>
 
-<a th:href="@{'/courses/' + ${course.id} + '/edit'}">Edit Course</a>
-<a th:href="@{'/courses/' + ${course.id} + '/delete'}">Delete Course</a>
-
+        <div class="mt-4">
+            <h3>Palivové články:</h3>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center" th:each="fuelCell : ${course.fuelCells}">
+                    <div>
+                        <span th:text="'Height: ' + ${fuelCell.height} + ', Width: ' + ${fuelCell.width} + ', Quality: ' + ${fuelCell.quality} + ', Hole Offcenter: ' + ${fuelCell.holeOffcenter}"></span>
+                    </div>
+                    <div>
+                        <a th:href="@{'/fuel-cells/' + ${fuelCell.id} + '/edit'}" class="btn btn-primary btn-sm">Edit</a>
+                        <a th:href="@{'/fuel-cells/' + ${fuelCell.id} + '/delete'}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>

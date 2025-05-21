@@ -1,17 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>List of Users</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head"></head>
 <body>
-<a th:href="@{/users/new}">Add new User</a>
-
-<ul>
-    <li th:each="user: ${users}">
-        <a th:href="@{'/users/' + ${user.id}}" th:text="${user.name}"></a>
-    </li>
-</ul>
-
+    <nav th:replace="layout :: nav"></nav>
+    <div th:fragment="content" class="p-5">
+        <h1 class="text-center mb-4">Seznam členů spolku</h1>
+        <a class="btn btn-primary mb-4" th:href="@{/users/new}">Přidat členar</a>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col" th:each="user: ${users}">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 150px; background-color: #f8f9fa;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M13.468 12.37C12.758 11.226 11.482 10.5 10 10.5c-1.482 0-2.758.726-3.468 1.87A6.987 6.987 0 0 1 8 15a6.987 6.987 0 0 1-1.532-.63C5.242 11.226 3.966 10.5 2.484 10.5c-1.482 0-2.758.726-3.468 1.87A6.987 6.987 0 0 1 0 15a6.987 6.987 0 0 1 1.532-.63C2.242 11.226 3.518 10.5 5 10.5c1.482 0 2.758.726 3.468 1.87A6.987 6.987 0 0 1 8 15a6.987 6.987 0 0 1 1.532-.63C10.758 11.226 12.034 10.5 13.516 10.5c1.482 0 2.758.726 3.468 1.87A6.987 6.987 0 0 1 16 15a6.987 6.987 0 0 1-1.532-.63z"/>
+                            <path fill-rule="evenodd" d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
+                        </svg>
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title" th:text="${user.username}"></h5>
+                        <p class="card-text text-muted" th:text="'Spolkový věk: ' + ${T(cz.uhk.kpro2.util.DateUtils).calculateDaysInAssociation(user.startDate)} + ' dní'"></p>
+                        <a class="btn btn-primary btn-sm" th:href="@{'/users/' + ${user.id}}">Podrobnosti</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

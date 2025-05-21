@@ -1,6 +1,7 @@
 package cz.uhk.kpro2.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "courses")
@@ -11,14 +12,42 @@ public class Course {
     private String name;
 
     @ManyToOne
-    private Lecturer lecturer;
+    @JoinColumn(name = "bos_member_id", nullable = true) // Ensure the foreign key column is correctly named
+    private BOSMember bosMember;
 
-    public Lecturer getLecturer() {
-        return lecturer;
+    @ManyToMany
+    @JoinTable(
+        name = "course_members",
+        joinColumns = @JoinColumn(name = "course_id"),
+        inverseJoinColumns = @JoinColumn(name = "member_id")
+    )
+    private List<User> members;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FuelCell> fuelCells;
+
+    public BOSMember getBosMember() {
+        return bosMember;
     }
 
-    public void setLecturer(Lecturer lecturer) {
-        this.lecturer = lecturer;
+    public void setBosMember(BOSMember bosMember) {
+        this.bosMember = bosMember;
+    }
+
+    public List<User> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<User> members) {
+        this.members = members;
+    }
+
+    public List<FuelCell> getFuelCells() {
+        return fuelCells;
+    }
+
+    public void setFuelCells(List<FuelCell> fuelCells) {
+        this.fuelCells = fuelCells;
     }
 
     public long getId() {

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="layout :: head"></head>
+<body>
+<nav th:replace="layout :: nav"></nav>
+
+<div th:fragment="content" class="p-4">
+    <h1 th:text="${fuelCell.id != null ? 'Upravit palivový článek' : 'Přidat palivový článek'}"></h1>
+    <form method="post" th:action="@{/fuel-cells/save}" th:object="${fuelCell}">
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{course.id}">
+
+        <div class="mb-3">
+            <label for="height" class="form-label">Height</label>
+            <input type="number" class="form-control" id="height" th:field="*{height}">
+        </div>
+        <div class="mb-3">
+            <label for="width" class="form-label">Width</label>
+            <input type="number" class="form-control" id="width" th:field="*{width}">
+        </div>
+        <div class="mb-3">
+            <label for="quality" class="form-label">Quality</label>
+            <input type="text" class="form-control" id="quality" th:field="*{quality}">
+        </div>
+        <div class="mb-3">
+            <label for="holeOffcenter" class="form-label">Hole Offcenter</label>
+            <input type="number" class="form-control" id="holeOffcenter" th:field="*{holeOffcenter}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a th:href="@{'/fuel-cells/' + ${fuelCell.id} + '/delete'}" class="btn btn-danger">Remove</a>
+    </form>
+</div>
+</body>
+</html>

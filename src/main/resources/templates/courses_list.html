@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>List of Courses</title>
-</head>
+<head th:replace="layout :: head"></head>
+
 <body>
-<a th:href="@{/courses/new}">Add new Course</a>
+<nav th:replace="layout :: nav"></nav>
 
-<ul>
-    <li th:each="course: ${courses}">
-        <a th:href="@{'/courses/' + ${course.id}}" th:text="${course.name}"></a>
-    </li>
-</ul>
-
+<div th:fragment="content" class="p-5">
+    <h1 class="text-center">Vaření</h1>
+    <a class="btn btn-primary mb-3" th:href="@{/courses/new}">Nové vaření</a>
+    <ul class="list-group">
+        <li class="list-group-item" th:each="course: ${courses}">
+            <a th:href="@{'/courses/' + ${course.id}}" th:text="${course.name}"></a>
+        </li>
+    </ul>
+</div>
 </body>
 </html>

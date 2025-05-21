@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Detail of the User</title>
-</head>
+<head th:replace="layout :: head"></head>
+
 <body>
-<h1 th:text="${'User ' + user.name}"></h1>
-<h5 th:text="${'ID: ' + user.id}"></h5>
-
-<a th:href="@{'/users/' + ${user.id} + '/edit'}">Edit User</a>
-<a th:href="@{'/users/' + ${user.id} + '/delete'}">Delete User</a>
-
+    <nav th:replace="layout :: nav"></nav>
+    <div th:fragment="content" class="p-5">
+        <h1 th:text="${'User ' + user.username}"></h1>
+        <h5 th:text="${'ID: ' + user.id}"></h5>
+        <h5 th:text="${'Spolkový věk: ' + T(cz.uhk.kpro2.util.DateUtils).calculateDaysInAssociation(user.startDate) + ' dní'}"></h5>
+        <a class="btn btn-primary" th:href="@{'/users/' + ${user.id} + '/edit'}">Edit User</a>
+        <a class="btn btn-danger" th:href="@{'/users/' + ${user.id} + '/delete'}">Delete User</a>
+    </div>
 </body>
 </html>

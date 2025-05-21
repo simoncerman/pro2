@@ -5,28 +5,16 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "lecturers")
-public class Lecturer {
+@Table(name = "bos_members")
+public class BOSMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "lecturer")
-    private List<Course> courses;
-
-    public List<Course> getCourses() {
-        return courses;
+    public Long getId() {
+        return id != null ? id : -1L; // nebo null, ale to stejně může hodit chybu jinde
     }
-
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
-
-    public long getId() {
-        return id;
-    }
-
     public void setId(long id) {
         this.id = id;
     }

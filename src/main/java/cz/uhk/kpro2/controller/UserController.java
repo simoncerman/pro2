@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/users")
@@ -20,6 +24,8 @@ public class UserController {
 
     @GetMapping("/")
     public String getAll(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("authName", authentication.getName());
         model.addAttribute("users", userService.getAllUsers());
         return "users_list";
     }
@@ -52,10 +58,12 @@ public class UserController {
 
     @PostMapping("/save")
     public String saveUser(@ModelAttribute User user) {
+        if (user.getStartDate() == null) {
+            user.setStartDate(LocalDate.now());
+        }
         userService.saveUser(user);
         return "redirect:/users/";
     }
-
 
     @GetMapping("/{id}/delete")
     public String deleteUser(Model model, @PathVariable long id) {

@@ -1,8 +1,12 @@
 package cz.uhk.kpro2.controller;
 
+import cz.uhk.kpro2.model.BOSMember;
 import cz.uhk.kpro2.model.Course;
+import cz.uhk.kpro2.model.User;
+import cz.uhk.kpro2.model.FuelCell;
+import cz.uhk.kpro2.service.BOSService;
 import cz.uhk.kpro2.service.CourseService;
-import cz.uhk.kpro2.service.LecturerService;
+import cz.uhk.kpro2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +17,14 @@ import org.springframework.web.bind.annotation.*;
 public class CourseController {
 
     private final CourseService courseService;
-    private final LecturerService lecturerService;
+    private final BOSService bosService;
+    private final UserService userService;
 
     @Autowired
-    public CourseController(CourseService courseService, LecturerService lecturerService) {
+    public CourseController(CourseService courseService, BOSService bosService, UserService userService) {
         this.courseService = courseService;
-        this.lecturerService = lecturerService;
+        this.bosService = bosService;
+        this.userService = userService;
     }
 
     @GetMapping("/")
@@ -30,7 +36,8 @@ public class CourseController {
     @GetMapping("/new")
     public String newCourse(Model model) {
         model.addAttribute("course", new Course());
-        model.addAttribute("lecturers", lecturerService.getAllLecturers());
+        model.addAttribute("bosMembers", bosService.getAllBOSMembers());
+        model.addAttribute("members", userService.getAllUsers());
         return "courses_form";
     }
 
@@ -44,11 +51,17 @@ public class CourseController {
         return "redirect:/courses/";
     }
 
+    @GetMapping("/{id}/fuel-cells/new")
+    public String redirectToFuelCellForm(@PathVariable long id) {
+        return "redirect:/fuel-cells/new?courseId=" + id;
+    }
+
     @GetMapping("/{id}/edit")
     public String editCourse(Model model, @PathVariable long id) {
         Course course = courseService.getCourse(id);
         if (course != null) {
-            model.addAttribute("lecturers", lecturerService.getAllLecturers());
+            model.addAttribute("bosMembers", bosService.getAllBOSMembers());
+            model.addAttribute("members", userService.getAllUsers());
             model.addAttribute("course", course);
             return "courses_form";
         }
@@ -57,10 +70,14 @@ public class CourseController {
 
     @PostMapping("/save")
     public String saveCourse(@ModelAttribute Course course) {
+        if (course.getFuelCells() != null) {
+            for (FuelCell fuelCell : course.getFuelCells()) {
+                fuelCell.setCourse(course); // Ensure the relationship is set
+            }
+        }
         courseService.saveCourse(course);
         return "redirect:/courses/";
     }
-
 
     @GetMapping("/{id}/delete")
     public String deleteCourse(Model model, @PathVariable long id) {
@@ -76,6 +93,23 @@ public class CourseController {
     public String deleteCourseConfirm(@PathVariable long id) {
         courseService.deleteCourse(id);
         return "redirect:/courses/";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/register")
+    public String register(Model model) {
+        model.addAttribute("user", new User());
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String registerUser(@ModelAttribute User user) {
+        // Logic to save the user (e.g., userService.saveUser(user))
+        return "redirect:/courses/login";
     }
 
 }
